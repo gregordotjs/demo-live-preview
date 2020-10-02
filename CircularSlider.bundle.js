@@ -64,7 +64,7 @@ var CircularSlider =
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "cec609503452ca7fecfd";
+/******/ 	var hotCurrentHash = "f2080bf0e7748f0f9d07";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -10757,6 +10757,10 @@ var defaults = {
   svgHeight: 400,
   svgWidth: 400,
   strokeWidth: 40,
+  handle: {
+    strokeWidth: 10,
+    radius: 20
+  },
   center: {
     x: 0,
     y: 0
@@ -10937,18 +10941,27 @@ function CircularSlider(options) {
         }, _utils_consts__WEBPACK_IMPORTED_MODULE_1__["SVG"])); // Append SVG container to div (container)
 
 
-        _classPrivateFieldGet(_this, _container).appendChild(_classPrivateFieldGet(_this, _SVGContainer));
+        _classPrivateFieldGet(_this, _container).appendChild(_classPrivateFieldGet(_this, _SVGContainer)); // calculate the center of the SVG container
+
+
+        defaults.center = {
+          x: (_width || defaults.svgWidth) / 2,
+          y: (_height || defaults.svgHeight) / 2
+        };
       }
 
       var _classPrivateFieldGet3 = _classPrivateFieldGet(_this, _SVGContainer).getBoundingClientRect(),
           width = _classPrivateFieldGet3.width,
-          height = _classPrivateFieldGet3.height; // calculate the center of the SVG container
+          height = _classPrivateFieldGet3.height;
 
+      var _defaults$handle = defaults.handle,
+          strokeWidth = _defaults$handle.strokeWidth,
+          radius = _defaults$handle.radius;
 
-      defaults.center = {
-        x: width / 2,
-        y: height / 2
-      };
+      if (width / 2 < _classPrivateFieldGet(_this, _radius) + strokeWidth + radius || height / 2 < _classPrivateFieldGet(_this, _radius) + strokeWidth + radius) {
+        throw new Error("Circle is out of bounds. r: ".concat(_classPrivateFieldGet(_this, _radius), ", container width: ").concat(width, ", container height: ").concat(height));
+      }
+
       var _defaults$center = defaults.center,
           x = _defaults$center.x,
           y = _defaults$center.y;
@@ -10971,10 +10984,10 @@ function CircularSlider(options) {
       _classPrivateFieldSet(_this, _sliderHandle, Object(_utils_generate_svg__WEBPACK_IMPORTED_MODULE_2__["default"])((_generateSVGElement = {
         cx: x,
         cy: y - _classPrivateFieldGet(_this, _radius),
-        r: 20,
+        r: defaults.handle.radius,
         fill: "white",
         stroke: "#888"
-      }, _defineProperty(_generateSVGElement, "stroke-width", 10), _defineProperty(_generateSVGElement, "style", "cursor: grab;"), _generateSVGElement), _utils_consts__WEBPACK_IMPORTED_MODULE_1__["CIRCLE"])); // append SVG elements to SVG container
+      }, _defineProperty(_generateSVGElement, "stroke-width", defaults.handle.strokeWidth), _defineProperty(_generateSVGElement, "style", "cursor: grab;"), _generateSVGElement), _utils_consts__WEBPACK_IMPORTED_MODULE_1__["CIRCLE"])); // append SVG elements to SVG container
 
 
       _classPrivateFieldGet(_this, _SVGContainer).appendChild(_classPrivateFieldGet(_this, _circle));
@@ -10988,7 +11001,8 @@ function CircularSlider(options) {
 
       _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_MOVE"], _classPrivateFieldGet(_this, _slide));
 
-      _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_UP"], _classPrivateFieldGet(_this, _endSlide));
+      _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_UP"], _classPrivateFieldGet(_this, _endSlide)); // mouse events
+
 
       _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_START"], _classPrivateFieldGet(_this, _startSlide));
 
@@ -10996,17 +11010,16 @@ function CircularSlider(options) {
 
       _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_END"], _classPrivateFieldGet(_this, _endSlide));
 
-      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_START"], _classPrivateFieldGet(_this, _startSlide));
-
-      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_MOVE"], _classPrivateFieldGet(_this, _slide));
-
-      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_END"], _classPrivateFieldGet(_this, _endSlide));
-
       _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["CLICK"], _classPrivateFieldGet(_this, _endSlide));
 
       _classPrivateFieldGet(_this, _progressCircle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["CLICK"], _classPrivateFieldGet(_this, _endSlide));
 
-      _classPrivateFieldGet(_this, _emit).call(_this, _classPrivateFieldGet(_this, _min));
+      _classPrivateFieldGet(_this, _emit).call(_this, _classPrivateFieldGet(_this, _min)); // fixed issues with touchmove
+
+
+      _classPrivateFieldGet(_this, _container).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_MOVE"], _classPrivateFieldGet(_this, _slide));
+
+      _classPrivateFieldGet(_this, _container).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_MOVE"], _classPrivateFieldGet(_this, _slide));
 
       window.document.addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_UP"], function (_) {
         _classPrivateFieldGet(_this, _sliderHandle).setAttribute("style", "cursor: grab");
@@ -11178,7 +11191,7 @@ function CircularSlider(options) {
       _options$min = options.min,
       _min2 = _options$min === void 0 ? 0 : _options$min,
       step = options.step,
-      radius = options.radius,
+      _radius2 = options.radius,
       _options$onChange = options.onChange,
       onChange = _options$onChange === void 0 ? null : _options$onChange;
 
@@ -11198,7 +11211,7 @@ function CircularSlider(options) {
 
   _classPrivateFieldSet(this, _step, step);
 
-  _classPrivateFieldSet(this, _radius, radius);
+  _classPrivateFieldSet(this, _radius, _radius2);
 
   _classPrivateFieldGet(this, _OnInit).call(this);
 };
