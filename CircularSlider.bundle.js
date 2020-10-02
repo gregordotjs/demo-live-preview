@@ -64,7 +64,7 @@ var CircularSlider =
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "c56a6b733e13aa043ceb";
+/******/ 	var hotCurrentHash = "6a926d6f7ef870a2a4a6";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -10803,6 +10803,8 @@ var _endSlide = new WeakMap();
 
 var _click = new WeakMap();
 
+var _dropOutside = new WeakMap();
+
 var _slide = new WeakMap();
 
 var _handleSlide = new WeakMap();
@@ -10963,7 +10965,7 @@ function CircularSlider(options) {
       }, _defineProperty(_circleAttributes, "stroke-width", defaults.strokeWidth), _defineProperty(_circleAttributes, "style", "cursor: pointer;"), _circleAttributes);
 
       _classPrivateFieldSet(_this, _circle, Object(_utils_generate_svg__WEBPACK_IMPORTED_MODULE_2__["default"])(_objectSpread(_objectSpread({}, circleAttributes), {}, {
-        "class": 'circle'
+        "class": "circle"
       }), _utils_consts__WEBPACK_IMPORTED_MODULE_1__["CIRCLE"])); // stroke-dasharray: dash-length, gap-length
       // "hides" the progress circle
 
@@ -11015,23 +11017,11 @@ function CircularSlider(options) {
 
       _classPrivateFieldGet(_this, _container).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_MOVE"], _classPrivateFieldGet(_this, _slide));
 
-      _classPrivateFieldGet(_this, _container).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_MOVE"], _classPrivateFieldGet(_this, _slide)); // fixed issues if mouseup performed outside the circle 
+      _classPrivateFieldGet(_this, _container).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_MOVE"], _classPrivateFieldGet(_this, _slide)); // fixed issues if mouseup performed outside the circle
 
 
-      window.document.addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_UP"], function (_) {
-        _classPrivateFieldGet(_this, _sliderHandle).setAttribute("style", "cursor: grab");
-
-        _classPrivateFieldSet(_this, _isMouseDown, false);
-
-        var _classPrivateFieldGet4 = _classPrivateFieldGet(_this, _lastMousePosition),
-            x = _classPrivateFieldGet4.x,
-            y = _classPrivateFieldGet4.y;
-
-        if (x !== null && y !== null) _classPrivateFieldGet(_this, _handleSlide).call(_this, {
-          pageX: x,
-          pageY: y
-        });
-      });
+      window.document.addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["MOUSE_UP"], _classPrivateFieldGet(_this, _dropOutside));
+      window.document.addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_END"], _classPrivateFieldGet(_this, _dropOutside));
     }
   });
 
@@ -11065,6 +11055,24 @@ function CircularSlider(options) {
       _classPrivateFieldSet(_this, _isMouseDown, false);
 
       _classPrivateFieldGet(_this, _handleSlide).call(_this, e);
+    }
+  });
+
+  _dropOutside.set(this, {
+    writable: true,
+    value: function value() {
+      _classPrivateFieldGet(_this, _sliderHandle).setAttribute("style", "cursor: grab");
+
+      _classPrivateFieldSet(_this, _isMouseDown, false);
+
+      var _classPrivateFieldGet4 = _classPrivateFieldGet(_this, _lastMousePosition),
+          x = _classPrivateFieldGet4.x,
+          y = _classPrivateFieldGet4.y;
+
+      if (x !== null && y !== null) _classPrivateFieldGet(_this, _handleSlide).call(_this, {
+        pageX: x,
+        pageY: y
+      });
     }
   });
 
