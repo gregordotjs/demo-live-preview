@@ -64,7 +64,7 @@ var CircularSlider =
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "de958325303f0760328c";
+/******/ 	var hotCurrentHash = "cec609503452ca7fecfd";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -10995,6 +10995,12 @@ function CircularSlider(options) {
       _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_MOVE"], _classPrivateFieldGet(_this, _slide));
 
       _classPrivateFieldGet(_this, _sliderHandle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_END"], _classPrivateFieldGet(_this, _endSlide));
+
+      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_START"], _classPrivateFieldGet(_this, _startSlide));
+
+      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_MOVE"], _classPrivateFieldGet(_this, _slide));
+
+      _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["TOUCH_END"], _classPrivateFieldGet(_this, _endSlide));
 
       _classPrivateFieldGet(_this, _circle).addEventListener(_utils_consts__WEBPACK_IMPORTED_MODULE_1__["CLICK"], _classPrivateFieldGet(_this, _endSlide));
 
