@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Circular slider demo</title>
     <style>
+      body {
+        overscroll-behavior-y: contain;
+      }
       .spinner-value {
         font-size: 160%;
         font-weight: 900;
@@ -47,12 +53,12 @@
       </div>
       <div id="sliders"></div>
     </div>
-    
+    <% for(var i=0; i < htmlWebpackPlugin.files.js.length; i++) {%>
     <script
       type="text/javascript"
-      src="CircularSlider.bundle.js"
+      src="<%= htmlWebpackPlugin.files.js[i] %>"
     ></script>
-    
+    <% } %>
     <script src="index.js"></script>
   </body>
 </html>
